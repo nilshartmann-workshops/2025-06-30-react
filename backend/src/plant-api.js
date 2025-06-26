@@ -56,6 +56,10 @@ export function setupPlantsApi(app) {
       errors.push({ error: "'name' must be specified" });
     }
 
+    if (name.toUpperCase() === name) {
+      errors.push({ error: "'name' must not contain only uppercase letters" });
+    }
+
     if (!location) {
       errors.push({ error: "'location' must be an non-empty string" });
     }
@@ -92,7 +96,7 @@ export function setupPlantsApi(app) {
       name,
       location,
       wateringInterval,
-      lastWatered: lastWatered || dayjs().format("YYYY-MM-DD"),
+      lastWatered,
       notes: notes || undefined,
     };
 
