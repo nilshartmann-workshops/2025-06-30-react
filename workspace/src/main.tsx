@@ -4,15 +4,25 @@ import "./setup-dayjs.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router";
 
-import App from "./components/App.tsx";
 import { createQueryClient } from "./create-query-client.tsx";
+import Add from "./routes/Add.tsx";
+import AppLayout from "./routes/AppLayout.tsx";
+import Home from "./routes/Home.tsx";
 
 const queryClient = createQueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path={"/"} element={<AppLayout />}>
+          <Route index element={<Home />} />
+          <Route path="/add" element={<Add />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
     <ReactQueryDevtools />
   </QueryClientProvider>,
 );
