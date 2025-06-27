@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 import { Plant } from "../types.ts";
 import PlantCardListLoader from "./PlantCardListLoader.tsx";
@@ -39,7 +40,21 @@ export default function App() {
 
   return (
     <div className={"AppContainer"}>
-      <PlantCardListLoader />
+      <ErrorBoundary
+        fallback={
+          <div className={"error-message"}>
+            Fehler beim Laden der Pflanzen 🥀
+          </div>
+        }
+      >
+        <Suspense
+          fallback={
+            <div className={"CardListFallback"}>Pflanzen werden geladen...</div>
+          }
+        >
+          <PlantCardListLoader />
+        </Suspense>
+      </ErrorBoundary>
       {/*<button onClick={() => loadPlantsWithFetch()} className={"primary"}>*/}
       {/*  Lade Pflanzen*/}
       {/*</button>*/}
