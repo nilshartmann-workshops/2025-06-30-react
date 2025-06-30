@@ -13,6 +13,7 @@ const props = {
  */
 
 import { Fragment } from "react";
+import { Plant } from "../types.ts";
 
 type PlantCardProps = {
   name: string
