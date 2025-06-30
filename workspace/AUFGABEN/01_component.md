@@ -46,7 +46,7 @@
 - CSS-Klassennamen in React: https://react.dev/learn#adding-styles
 - Importieren und Exportieren von Komponenten: https://react.dev/learn/importing-and-exporting-components
     - Hinweis: In unserer Umgebung musst du die Dateierweiterung beim Import nicht angeben!
-    - z.B. `import PlantCard from "./components/PlantCard`
+    - z.B. `import PlantCard from "./PlantCard`
 
 # Hintergrund: CSS in React
 
