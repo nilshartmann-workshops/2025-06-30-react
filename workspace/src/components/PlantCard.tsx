@@ -5,7 +5,7 @@ export default function PlantCard() {
   // Daten
   // View
   // JSX
-  return <div>
+  return <div className={"PlantCard"}>
     <header>
       <h2>Aloe Vera</h2>
       <div>Schlafzimmer</div>
