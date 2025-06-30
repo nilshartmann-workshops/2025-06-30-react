@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 import { Plant } from "../types.ts";
 import PlantCard from "./PlantCard.tsx";
 
@@ -8,13 +10,14 @@ export default function PlantCardList({ plants }: PlantCardListProps) {
   return (
     <div className={"PlantCardList"}>
       {plants.map((p) => (
-        <PlantCard
-          key={p.id}
-          name={p.name}
-          location={p.location}
-          wateringInterval={p.wateringInterval}
-          lastWatered={p.lastWatered}
-        />
+        <Link key={p.id} to={`/${p.id}`}>
+          <PlantCard
+            name={p.name}
+            location={p.location}
+            wateringInterval={p.wateringInterval}
+            lastWatered={p.lastWatered}
+          />
+        </Link>
       ))}
     </div>
   );

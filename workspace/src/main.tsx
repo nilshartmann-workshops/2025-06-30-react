@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { createQueryClient } from "./create-query-client.tsx";
 import Add from "./routes/Add.tsx";
 import AppLayout from "./routes/AppLayout.tsx";
+import Detail from "./routes/Detail.tsx";
 import Home from "./routes/Home.tsx";
 
 const queryClient = createQueryClient();
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route path={"/"} element={<AppLayout />}>
           <Route index element={<Home />} />
+          <Route path="/:plantId" element={<Detail />} />
           <Route path="/add" element={<Add />} />
         </Route>
       </Routes>

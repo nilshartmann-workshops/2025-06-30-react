@@ -17,3 +17,7 @@ export function getDaysUntilWatering(
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays;
 }
+
+export const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("de-DE");
+};

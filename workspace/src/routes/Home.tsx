@@ -16,7 +16,9 @@ export default function Home() {
           <div className={"CardListFallback"}>Pflanzen werden geladen...</div>
         }
       >
-        <Link to={"/add"}>+ Neue Pflanze</Link>
+        <Link className={"primary"} to={"/add"}>
+          + Neue Pflanze
+        </Link>
         <PlantCardListLoader />
       </Suspense>
     </ErrorBoundary>

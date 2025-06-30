@@ -5,7 +5,9 @@ import PlantForm from "../components/PlantForm.tsx";
 export default function Add() {
   return (
     <>
-      <Link to={"/"}>Home</Link>
+      <Link className={"primary"} to={"/"}>
+        Home
+      </Link>
       <PlantForm />
     </>
   );
