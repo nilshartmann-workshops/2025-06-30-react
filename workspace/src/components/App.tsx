@@ -29,10 +29,12 @@ export default function App() {
     <div className={"AppContainer"}>
 
       <form>
-        {intervalSelectorVisible ? <IntervalSelector
-        intervalValue={wateringInterval}
-        onIntervalChange={ setWateringInterval }
-        /> : "Kein Selector heute :-("}
+        {intervalSelectorVisible ?
+          <IntervalSelector
+            intervalValue={wateringInterval}
+            onIntervalChange={ setWateringInterval }
+          />
+          : "Kein Selector heute :-("}
       </form>
       <button onClick={() => setIntervalSelectorVisible(!intervalSelectorVisible)}>
         Hide / Show Interval Selector
