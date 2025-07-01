@@ -4,7 +4,13 @@ import { ChangeEvent, useState } from "react";
 // 3. Event Listener Phase
 
 // 101 | setInterval
-export default function IntervalSelector() {
+
+type IntervalSelectorProps = {
+  intervalValue: number;
+  onIntervalChange(newInterval: number): void
+}
+
+export default function IntervalSelector(props: IntervalSelectorProps) {
 
   // State (Zustand)  -> Model
   // const state = useState(100); // Tuple
@@ -21,7 +27,7 @@ export default function IntervalSelector() {
   // setInterval(map.set("interval", 101))
 
   // Array Destrucutring
-  const [ intervalValue, setIntervalValue ] = useState<number>(123) // 101
+  // const [ intervalValue, setIntervalValue ] = useState<number>(123) // 101
   // const [ persons, setPersons ] = useState<Person[]>([]) // 101
   // const [ wateredAt, setWateredAt ] = useState<string|null>(null);
   // console.log("Interval", intervalValue);
@@ -31,21 +37,32 @@ export default function IntervalSelector() {
 
   // const handleIntervalValueChange = (e: ChangeEvent<HTMLInputElement>) => {
   function handleIntervalValueChange(e: ChangeEvent<HTMLInputElement>) {
+    try {
       const newInterval = parseInt(e.target.value);
-      setIntervalValue(newInterval)
+      props.onIntervalChange(newInterval)
+    } catch (e) {
+      // ...
+    }
+
   }
 
   // MeineKomponente::handleIntervalValueChange
 
   return <div>
     <label>Interval </label>
-    <p>Alle {intervalValue} Tage gießen! </p>
-    <input type={"number"} value={intervalValue}
+    <p>Alle {props.intervalValue} Tage gießen! </p>
+    <input type={"number"} value={props.intervalValue}
       onChange={ handleIntervalValueChange }
     />
-    {intervalValue < 1 && <p>Pflanzen mind. 1 Tag wässern</p>}
-    <button onClick={ () => setIntervalValue(7)}>
-      Wöchentlich wässern
+    {props.intervalValue < 1 && <p>Pflanzen mind. 1 Tag wässern</p>}
+    <button  type="button" className={"sm"}  onClick={ () => props.onIntervalChange(1)}>
+      Daily
+    </button>
+    <button type="button" className={"sm"} onClick={ () => props.onIntervalChange(7)}>
+      Weekly
+    </button>
+    <button type="button" className={"sm"} onClick={ () => props.onIntervalChange(14)}>
+      Biweekly
     </button>
   </div>
 }
