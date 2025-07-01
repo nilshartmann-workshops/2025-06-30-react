@@ -3,6 +3,7 @@ import { Plant } from "../types.ts";
 import PlantCardList from "./PlantCardList.tsx";
 import IntervalSelector from "./IntervalSelector.tsx";
 import { useState } from "react";
+import PlantForm from "./PlantForm.tsx";
 
 const allPlants = [
   {
@@ -28,17 +29,19 @@ export default function App() {
   return (
     <div className={"AppContainer"}>
 
-      <form>
-        {intervalSelectorVisible ?
-          <IntervalSelector
-            intervalValue={wateringInterval}
-            onIntervalChange={ setWateringInterval }
-          />
-          : "Kein Selector heute :-("}
-      </form>
-      <button onClick={() => setIntervalSelectorVisible(!intervalSelectorVisible)}>
-        Hide / Show Interval Selector
-      </button>
+      <PlantForm />
+
+      {/*<form>*/}
+      {/*  {intervalSelectorVisible ?*/}
+      {/*    <IntervalSelector*/}
+      {/*      intervalValue={wateringInterval}*/}
+      {/*      onIntervalChange={ setWateringInterval }*/}
+      {/*    />*/}
+      {/*    : "Kein Selector heute :-("}*/}
+      {/*</form>*/}
+      {/*<button onClick={() => setIntervalSelectorVisible(!intervalSelectorVisible)}>*/}
+      {/*  Hide / Show Interval Selector*/}
+      {/*</button>*/}
 
       {/*<PlantCardList plants={allPlants} />*/}
       {/*<PlantCard*/}
