@@ -16,7 +16,7 @@ function loadPlantFromServer(): unknown {
 //   lastWatered?: string;
 // };
 
-export const Plant = z.object({
+export const PlantSchema = z.object({
   id: z.string(),
   name: z.string().nonempty(),
   location: z.string().nonempty(),
@@ -24,7 +24,7 @@ export const Plant = z.object({
   lastWatered: z.iso.date().optional(),
 });
 
-export type Plant = z.infer<typeof Plant>
+export type Plant = z.infer<typeof PlantSchema>
 //
 const mayBeAPlant = loadPlantFromServer();
 // const result = Plant.safeParse(mayBeAPlant)

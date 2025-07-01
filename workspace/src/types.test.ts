@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { Plant } from "./types.ts";
+import { Plant, PlantSchema } from "./types.ts";
 
 describe("PlantCard zod type", () => {
   it("works with all required properties", () => {
@@ -95,7 +95,7 @@ const basePlant = () => {
       return this;
     },
     validate() {
-      return Plant.safeParse(p);
+      return PlantSchema.safeParse(p);
     },
   };
 };
