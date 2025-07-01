@@ -22,8 +22,6 @@ const allPlants = [
 
 export default function App() {
 
-  window.__meine_backend_url
-
   const [intervalSelectorVisible, setIntervalSelectorVisible] = useState(true);
   const [ wateringInterval, setWateringInterval ] = useState<number>(123) // 101
 
