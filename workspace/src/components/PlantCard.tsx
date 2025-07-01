@@ -29,6 +29,9 @@ type PlantCardProps = {
 // View
 // JSX
 
+
+
+// const PlantCard2: React.FC<PlantCardProps> = (props) => {
 // export default function PlantCard({ wateringInterval, name, lastWatered, location}: PlantCardProps) {
 export default function PlantCard(props: PlantCardProps) {
   // if (props.lastWatered !== undefined) { // type narrowing
@@ -89,6 +92,9 @@ export default function PlantCard(props: PlantCardProps) {
   </div>;
 }
 
+// PlantCard.displayName = "Meine Pflanzen Karte";
+
+// export default PlantCard2;
 // export function Abc() {}
 export let person = "...";
 
