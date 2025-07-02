@@ -1,6 +1,7 @@
 import { z } from "zod/v4";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import dayjs from "dayjs";
 
 const IsoDateOrUndefined = z
   .string()
@@ -11,13 +12,32 @@ const PlantFormStateSchema = z.object({
   name: z.string().nonempty(),
   location: z.string().nonempty(),
   // lastWatered: z.iso.date().optional(),
-  lastWatered: IsoDateOrUndefined,
+  lastWatered: IsoDateOrUndefined.refine(v => {
+    if (!v) {
+      // kein Datum -> erlaubt
+      return true;
+    }
+    // ...wenn Datum gesetzt ist, darf es nicht in der Vergangenheit liegt
+    if (dayjs(v).isAfter(new Date())) {
+      return false;
+    }
+
+    return true;
+  })
 });
+
 type PlantFormState = z.infer<typeof PlantFormStateSchema>;
+
+
 
 export default function PlantForm() {
   const form = useForm({
     resolver: zodResolver(PlantFormStateSchema),
+    // Mit defaultValues könnt ihr das Formular
+    // vorbelegen
+    defaultValues: {
+      location: "Wohnzimmer"
+    }
   });
 
   const handleSave = (data: PlantFormState) => {
