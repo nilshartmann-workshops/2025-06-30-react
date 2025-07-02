@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import IntervalSelector from "./IntervalSelector.tsx";
 import ky from "ky";
 import { PlantSchema } from "../types.ts";
+import { useMutation } from "@tanstack/react-query";
 
 const IsoDateOrUndefined = z
   .transform((s) => (s === "" ? undefined : s))
@@ -59,18 +60,24 @@ export default function PlantForm() {
 
   // form.formState.isValid
 
+  const mutation = useMutation({
+    async mutationFn(newPlantData: PlantFormState) {
+      const response = await
+        ky.post("http://localhost:7200/api/plants", {
+        json: newPlantData
+      }).json();
+
+      const newPlant = PlantSchema.parse(response);
+      console.log("Gespeicherte Pflanze", newPlant);
+
+      return newPlant;
+    }
+  })
+
   const handleSave = async (newPlantData: PlantFormState) => {
     console.log("DATA", newPlantData);
 
-    const response = await ky.post("http://localhost:7200/api/plants", {
-      json: newPlantData
-    }).json();
-
-    const newPlant = PlantSchema.parse(response);
-
-    console.log("Gespeicherte Pflanze", newPlant);
-
-
+    mutation.mutate(newPlantData);
   };
 
   const handleError = (err: any) => {
