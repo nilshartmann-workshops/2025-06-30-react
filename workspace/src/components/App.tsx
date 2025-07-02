@@ -2,10 +2,10 @@ import PlantCard from "./PlantCard.tsx";
 import { Plant, PlantSchema } from "../types.ts";
 import PlantCardList from "./PlantCardList.tsx";
 import IntervalSelector from "./IntervalSelector.tsx";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import PlantForm from "./PlantForm.tsx";
 import ky from "ky";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 //
 // const allPlants = [
 //   {
@@ -32,27 +32,48 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 export default function App() {
 
-  const [orderBy, setOrderBy]  = useState ("id");
 
-  const result = useSuspenseQuery({
-    queryKey: ["plants", "lists", orderBy],
-
-    // queryFn: async function () {
-    async queryFn() {
-      const result =
-        await ky.get("http://localhost:7200/api/plants?orderBy=" + orderBy).json()
-      const allPlants =
-        PlantSchema.array().parse(result);
-      return allPlants;
-    }
-  })
+  const [view, setView] = useState("list")
 
   return (
     <div className={"AppContainer"}>
+      {/*<PlantForm />*/}
+      <button className={"primary"} onClick={() => setView(view === "list" ? "editor": "list")}>Hin und herwechseln</button>
+
+      {/*{view === "list" ? <PlantCardListLoader />: <PlantForm />}*/}
       <PlantForm />
-      <button onClick={() => setOrderBy("wateringInterval")}>wateringInterval</button>
-      <button onClick={() => setOrderBy("name")}>name</button>
-      <PlantCardList plants={result.data} />
+      <Suspense fallback={<h1>Please wait....</h1>}>
+        <PlantCardListLoader />
+      </Suspense>
+
+      <p>Hallo</p>
+
     </div>
   );
+}
+
+const getPlantsQueryOptions = (orderBy = "id") => queryOptions({
+  queryKey: ["plants", "lists", orderBy],
+
+  // queryFn: async function () {
+  async queryFn() {
+    const result =
+      await ky.get("http://localhost:7200/api/plants?slow=3000&orderBy=" + orderBy).json()
+    const allPlants =
+      PlantSchema.array().parse(result);
+    return allPlants;
+  }
+})
+
+function PlantCardListLoader() {
+  const [orderBy, setOrderBy]  = useState ("id");
+
+  const result = useSuspenseQuery(getPlantsQueryOptions(orderBy))
+  return <div>
+    <button onClick={() => setOrderBy("wateringInterval")}>wateringInterval</button>
+    <button onClick={() => setOrderBy("name")}>name</button>
+    <button onClick={() => result.refetch()}>Refetch</button>
+    <PlantCardList plants={result.data} />
+
+  </div>
 }

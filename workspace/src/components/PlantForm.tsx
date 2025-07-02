@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import IntervalSelector from "./IntervalSelector.tsx";
 import ky from "ky";
 import { PlantSchema } from "../types.ts";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const IsoDateOrUndefined = z
   .transform((s) => (s === "" ? undefined : s))
@@ -60,6 +60,9 @@ export default function PlantForm() {
 
   // form.formState.isValid
 
+
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     async mutationFn(newPlantData: PlantFormState) {
       const response = await
@@ -71,6 +74,12 @@ export default function PlantForm() {
       console.log("Gespeicherte Pflanze", newPlant);
 
       return newPlant;
+    },
+    onSuccess() {
+      //
+      queryClient.invalidateQueries({
+        queryKey: ["plants", "lists"]
+      })
     }
   })
 
