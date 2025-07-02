@@ -1,7 +1,8 @@
 import { z } from "zod/v4";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
+import IntervalSelector from "./IntervalSelector.tsx";
 
 const IsoDateOrUndefined = z
   .transform((s) => (s === "" ? undefined : s))
@@ -11,6 +12,11 @@ const PlantFormStateSchema = z.object({
   name: z.string("Bitte gib einen Pflanzenname ein").nonempty("Das Feld darf nicht leer sein"),
   location: z.string().nonempty("Gib den Standort ein!"),
   // lastWatered: z.iso.date().optional(),
+  wateringInterval: z.number().min(1),
+  // wateringInterval: z
+  //                     .number("Bitte gib an, wie häufig die Pflanze gegossen werden muss")
+  //                     .min(1, "Bitte gib die Anzahl in Tagen ein, mindestens jeden Tag"),
+
   lastWatered: IsoDateOrUndefined.refine(v => {
     if (!v) {
       // kein Datum -> erlaubt
@@ -60,7 +66,9 @@ export default function PlantForm() {
     <form onSubmit={form.handleSubmit(handleSave, handleError)}>
       <div className={"FormControl"}>
         <label htmlFor={"plantName"}>Name der Pflanze</label>
-        <input id={"plantName"} {...form.register("name")} />
+        <input id={"plantName"} {...form.register("name")}
+          aria-invalid={form.getFieldState("name").invalid}
+        />
         {form.formState.errors.name?.message !== undefined &&
           <span className={"error-message"}>
           {form.formState.errors.name?.message}
@@ -82,6 +90,20 @@ export default function PlantForm() {
       </div>
 
       <div className={"FormControl"}>
+        <Controller
+          control={form.control}
+          name={"wateringInterval"}
+          render={
+            field => <IntervalSelector
+              intervalValue={field.field.value}
+              onIntervalChange={field.field.onChange} />
+          }
+          />
+      </div>
+
+
+
+        <div className={"FormControl"}>
         <label>Zuletzt gegossen</label>
         <input
           type={"date"}
