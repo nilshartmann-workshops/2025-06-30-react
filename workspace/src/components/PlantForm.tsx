@@ -8,7 +8,7 @@ const IsoDateOrUndefined = z
   .pipe(z.iso.date("Bitte gib ein Datum im Format ... ein").optional())
 
 const PlantFormStateSchema = z.object({
-  name: z.string().nonempty(),
+  name: z.string("Bitte gib einen Pflanzenname ein").nonempty("Das Feld darf nicht leer sein"),
   location: z.string().nonempty("Gib den Standort ein!"),
   // lastWatered: z.iso.date().optional(),
   lastWatered: IsoDateOrUndefined.refine(v => {
