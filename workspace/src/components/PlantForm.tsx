@@ -3,6 +3,8 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import IntervalSelector from "./IntervalSelector.tsx";
+import ky from "ky";
+import { PlantSchema } from "../types.ts";
 
 const IsoDateOrUndefined = z
   .transform((s) => (s === "" ? undefined : s))
@@ -41,6 +43,9 @@ type PlantFormState = z.infer<typeof PlantFormStateSchema>;
 
 
 export default function PlantForm() {
+
+  // window.document.title ="Neue Pflanze erfassen"
+
   const form = useForm({
     resolver: zodResolver(PlantFormStateSchema),
     // wann wird validiert?
@@ -54,8 +59,18 @@ export default function PlantForm() {
 
   // form.formState.isValid
 
-  const handleSave = (data: PlantFormState) => {
-    console.log("DATA", data);
+  const handleSave = async (newPlantData: PlantFormState) => {
+    console.log("DATA", newPlantData);
+
+    const response = await ky.post("http://localhost:7200/api/plants", {
+      json: newPlantData
+    }).json();
+
+    const newPlant = PlantSchema.parse(response);
+
+    console.log("Gespeicherte Pflanze", newPlant);
+
+
   };
 
   const handleError = (err: any) => {
@@ -100,8 +115,6 @@ export default function PlantForm() {
           }
           />
       </div>
-
-
 
         <div className={"FormControl"}>
         <label>Zuletzt gegossen</label>

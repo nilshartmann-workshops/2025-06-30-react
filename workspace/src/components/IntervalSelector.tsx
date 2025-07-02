@@ -51,7 +51,7 @@ export default function IntervalSelector(props: IntervalSelectorProps) {
   return <div>
     <label>Interval </label>
     <p>Alle {props.intervalValue} Tage gießen! </p>
-    <input type={"number"} value={props.intervalValue}
+    <input type={"number"} value={props.intervalValue === undefined? "" : props.intervalValue}
       onChange={ handleIntervalValueChange }
     />
     {props.intervalValue < 1 && <p>Pflanzen mind. 1 Tag wässern</p>}
